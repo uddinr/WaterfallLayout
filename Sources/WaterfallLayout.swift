@@ -35,7 +35,7 @@ extension WaterfallLayoutDelegate {
     public func collectionView(_ collectionView: UICollectionView, layout: WaterfallLayout, estimatedSizeForItemAt indexPath: IndexPath) -> CGSize? { return nil }
 }
 
-public class WaterfallLayout: UICollectionViewLayout {
+open class WaterfallLayout: UICollectionViewLayout {
     public static let automaticSize: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: .greatestFiniteMagnitude)
     
     public enum Layout {
@@ -102,7 +102,7 @@ public class WaterfallLayout: UICollectionViewLayout {
 
     public weak var delegate: WaterfallLayoutDelegate?
 
-    public override func prepare() {
+    open override func prepare() {
         super.prepare()
         cleaunup()
 
@@ -125,7 +125,7 @@ public class WaterfallLayout: UICollectionViewLayout {
         }
     }
 
-    public override var collectionViewContentSize: CGSize {
+    open override var collectionViewContentSize: CGSize {
         guard let collectionView = collectionView, collectionView.numberOfSections > 0  else {
             return .zero
         }
@@ -134,7 +134,7 @@ public class WaterfallLayout: UICollectionViewLayout {
         return contentSize
     }
 
-    public override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+    open override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         if indexPath.section >= sectionItemAttributes.count {
             return nil
         }
@@ -144,19 +144,19 @@ public class WaterfallLayout: UICollectionViewLayout {
         return sectionItemAttributes[indexPath.section][indexPath.item]
     }
 
-    public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return allItemAttributes.filter { rect.intersects($0.frame) }
     }
 
-    public override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return newBounds.width != (collectionView?.bounds ?? .zero).width
     }
 
-    override public func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool {
+    open override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool {
         return cachedItemSizes[originalAttributes.indexPath] != preferredAttributes.size
     }
 
-    override public func invalidationContext(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutInvalidationContext {
+    open override func invalidationContext(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContext(forPreferredLayoutAttributes: preferredAttributes, withOriginalAttributes: originalAttributes)
 
         guard let collectionView = collectionView else { return context }
